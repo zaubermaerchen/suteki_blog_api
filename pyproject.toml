@@ -8,6 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 fastapi = {extras = ["all"], version = "^0.75.2"}
+SQLAlchemy = {extras = ["asyncmy"], version = "^1.4.36"}
 
 [tool.poetry.dev-dependencies]
 
