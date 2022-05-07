@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import Column, Integer, Text, Date, Index
 from sqlalchemy.dialects.mysql import LONGTEXT
-from database import Base
+from api.database import Base
 
 class Entity(Base):
     __tablename__ = "entry"

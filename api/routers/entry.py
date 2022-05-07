@@ -3,9 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from datetime import date
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_session as get_database_session
-import schemas.entry as schema
-import crud.entry as crud
+from api.database import get_session as get_database_session
+import api.schemas.entry as schema
+import api.crud.entry as crud
 
 router = APIRouter(
     prefix="/entry",

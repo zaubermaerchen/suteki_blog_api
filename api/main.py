@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from fastapi import FastAPI
-from routers import entry
+from api.routers import entry
 
 app = FastAPI(
     title="suteki_blog_api",

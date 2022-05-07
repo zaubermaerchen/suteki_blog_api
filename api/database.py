@@ -21,6 +21,6 @@ session = sessionmaker(
 
 Base = declarative_base()
 
-async def get_session():
+async def get_session() -> AsyncSession:
     async with session() as s:
         yield s

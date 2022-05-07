@@ -6,7 +6,7 @@ from sqlalchemy import select, func, or_, and_, desc
 from sqlalchemy.dialects.mysql import match
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import label
-import models.entry as model
+import api.models.entry as model
 
 async def get(db: AsyncSession, entry_id: int) -> Optional[model.Entity]:
     statement = select(model.Entity).where(model.Entity.id==entry_id)
