@@ -2,12 +2,13 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from api.config import get_settings
 
-DATABASE_URL = "mysql+asyncmy://bpuser:password@db/bpdb?charset=utf8mb4"
+settings = get_settings()
 
 engine = create_async_engine(
-    DATABASE_URL, 
-    echo=True,
+    settings.database_url, 
+    echo=settings.debug,
     future=True
 )
 
