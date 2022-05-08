@@ -18,7 +18,7 @@ class GetEntryResponse(BaseModel):
     @validator('authors', pre=True)
     def split_authors(cls, v):
         if isinstance(v, str):
-            return v.split(" ")
+            return v.split() if len(v) > 0 else []
         return v
 
 class SearchResultEntry(BaseModel):
@@ -42,7 +42,7 @@ class SearchResultEntry(BaseModel):
     @validator('authors', pre=True)
     def split_authors(cls, v):
         if isinstance(v, str):
-            return v.split(" ")
+            return v.split() if len(v) > 0 else []
         return v
 
     @classmethod
