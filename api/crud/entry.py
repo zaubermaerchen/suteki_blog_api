@@ -28,15 +28,15 @@ async def search(db: AsyncSession, query: str, from_date: Optional[date], to_dat
         where = and_(where, match(model.Entity.authors, against=" OR ".join(authors)).in_boolean_mode())
     
     # 総件数取得
-    statment = select(func.count(model.Entity.id).label("total")).where(where)
-    result = await db.execute(statment)
+    statement = select(func.count(model.Entity.id).label("total")).where(where)
+    result = await db.execute(statement)
     total = result.first()[0]
     if total <= offset:
         return [[], total]
 
     # 対象位置のデータ取得
     score_label = label('score', match(model.Entity.title, against=query).in_boolean_mode() + match(model.Entity.text, against=query).in_boolean_mode() + match(model.Entity.translation_text, against=query).in_boolean_mode())
-    statment = select(model.Entity, score_label).where(where).limit(limit).offset(offset).order_by(desc('score'))
-    result = await db.execute(statment)
+    statement = select(model.Entity, score_label).where(where).limit(limit).offset(offset).order_by(desc('score'))
+    result = await db.execute(statement)
 
     return [result.all(), total];
