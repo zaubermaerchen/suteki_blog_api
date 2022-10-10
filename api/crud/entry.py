@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
-from typing import Optional, List
+from typing import Optional, List, Tuple
 from sqlalchemy import select, func, or_, and_, desc
 from sqlalchemy.dialects.mysql import match
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +13,7 @@ async def get(db: AsyncSession, entry_id: int) -> Optional[model.Entity]:
     result = await db.execute(statement)
     return result.scalar()
 
-async def search(db: AsyncSession, query: str, from_date: Optional[date], to_date: Optional[date], authors: List[str], limit: int, offset: int) -> tuple[List[tuple[model.Entity, float]], int]:
+async def search(db: AsyncSession, query: str, from_date: Optional[date], to_date: Optional[date], authors: List[str], limit: int, offset: int) -> Tuple[List[Tuple[model.Entity, float]], int]:
     # 検索条件設定
     where = or_(
         match(model.Entity.title, against=query).in_boolean_mode(),
@@ -26,7 +26,7 @@ async def search(db: AsyncSession, query: str, from_date: Optional[date], to_dat
         where = and_(where, model.Entity.date <= to_date)
     if len(authors) > 0:
         where = and_(where, match(model.Entity.authors, against=" OR ".join(authors)).in_boolean_mode())
-    
+
     # 総件数取得
     statement = select(func.count(model.Entity.id).label("total")).where(where)
     result = await db.execute(statement)
