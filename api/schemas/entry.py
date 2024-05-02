@@ -13,8 +13,8 @@ class GetEntryResponse(BaseModel):
     authors: List[str] = Field(name="投稿者")
 
     class Config:
-        orm_mode = True
-    
+        from_attributes = True
+
     @validator('authors', pre=True)
     def split_authors(cls, v):
         if isinstance(v, str):
@@ -31,14 +31,14 @@ class SearchResultEntry(BaseModel):
     score: float = Field(0, name="検索スコア")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     @validator('text', pre=True)
     def summary_text(cls, v):
         if isinstance(v, str):
             return v.replace("\r\n", "")[:100]
         return v
-    
+
     @validator('authors', pre=True)
     def split_authors(cls, v):
         if isinstance(v, str):
