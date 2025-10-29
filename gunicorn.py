@@ -2,7 +2,7 @@ import os
 
 wsgi_app = 'api.main:app'
 worker_class = 'uvicorn.workers.UvicornWorker'
-bind = os.getenv('BIND', '0.0.0.0:8000');
+bind = os.getenv('BIND', '0.0.0.0:8000')
 loglevel = os.getenv('LOG_LEVEL', 'info')
 accesslog = '-'
 errorlog = '-'

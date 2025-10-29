@@ -1,6 +1,6 @@
 services:
   db:
-    image: zaubermaerchen/mariadb-mroonga
+    image: groonga/mroonga:mysql-8.4.6-15.17
     platform: linux/x86_64
     ports:
       - 3306:3306
@@ -20,12 +20,17 @@ services:
     # docker-compose.yml file (the first in the devcontainer.json "dockerComposeFile"
     # array). The sample below assumes your primary file is in the root of your project.
     #
-    build:
-       context: ..
-       dockerfile: Dockerfile
-       target: develop
-    ports:
-      - 8000:8000
+    image: mcr.microsoft.com/devcontainers/base:bullseye
+    tty: true
+    environment:
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+      UV_PROJECT_ENVIRONMENT: /home/vscode/.venv
+      UV_CACHE_DIR: /home/vscode/.cache/uv
+      UV_LINK_MODE: copy
+      UV_COMPILE_BYTECODE: 1
+      ENV: development
+      TZ: Asia/Tokyo
     depends_on:
       - db
     volumes:

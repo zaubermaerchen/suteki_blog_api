@@ -1,28 +1,41 @@
-FROM python:3.11-slim AS develop
-ENV LANG C.UTF-8
-ENV TZ Asia/Tokyo
-ENV PYTHONUNBUFFERED 1
+FROM python:3.14-slim-bookworm AS develop
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Tokyo
+ENV PYTHONUNBUFFERED=1
+ENV UV_PROJECT_ENVIRONMENT=/root/.venv
+ENV UV_CACHE_DIR=/root/.cache/uv
+ENV UV_PYTHON_VERSION=3.14
+ENV UV_LINK_MODE=copy
+ENV UV_COMPILE_BYTECODE=1
+
 WORKDIR /home/app
 COPY . /home/app
-RUN pip install poetry \
-    && poetry config virtualenvs.create false \
-    && poetry install --no-root
+RUN uv sync --locked
+
 EXPOSE 8000
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uv", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
-FROM python:3.11-slim AS build
+FROM python:3.14-slim-bookworm AS build
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 WORKDIR /tmp
-RUN pip install poetry
-COPY ./pyproject.toml ./poetry.lock* /tmp/
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+COPY ./pyproject.toml ./uv.lock /tmp/
+RUN uv pip compile pyproject.toml > requirements.txt
 
-FROM python:3.11-slim
-ENV LANG C.UTF-8
-ENV TZ Asia/Tokyo
-ENV PYTHONUNBUFFERED 1
+FROM python:3.14-slim-bookworm
+
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Tokyo
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /home/app
 COPY --from=build /tmp/requirements.txt /home/app/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /home/app/requirements.txt
+
 COPY . /home/app
+
 EXPOSE 8000
 CMD ["gunicorn", "--config", "/home/app/gunicorn.py"]
+
