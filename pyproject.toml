@@ -4,13 +4,10 @@ version = "0.1.0"
 description = ""
 requires-python = ">=3.11"
 dependencies = [
-    "alembic>=1.17.0",
-    "fastapi>=0.119.0",
+    "fastapi[standard]>=0.120.1",
     "gunicorn>=23.0.0",
-    "pydantic>=2.12.2",
     "pydantic-settings>=2.11.0",
     "sqlalchemy[asyncmy]>=2.0.44",
-    "uvicorn[standard]>=0.37.0",
 ]
 
 [project.optional-dependencies]

@@ -8,9 +8,10 @@
             "name": "Run FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
+            "module": "fastapi",
             "args": [
-                "api.main:app",
+                "dev",
+                "api/main.py",
                 "--host",
                 "0.0.0.0",
                 "--port",

@@ -15,7 +15,7 @@ COPY . /home/app
 RUN uv sync --locked
 
 EXPOSE 8000
-CMD ["uv", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uv", "run", "fastapi", "api/main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 FROM python:3.14-slim-bookworm AS build
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
@@ -37,5 +37,5 @@ RUN pip install --no-cache-dir --upgrade -r /home/app/requirements.txt
 COPY . /home/app
 
 EXPOSE 8000
-CMD ["gunicorn", "--config", "/home/app/gunicorn.py"]
+CMD ["fastapi", "run", "api/main.py", "--host", "0.0.0.0", "--port", "8000"]
 
