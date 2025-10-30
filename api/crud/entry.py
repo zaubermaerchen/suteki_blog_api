@@ -8,8 +8,8 @@ from sqlalchemy.sql import label
 import api.models.entry as model
 
 
-async def get(db: AsyncSession, entry_id: int) -> model.Entity | None:
-    statement = select(model.Entity).where(model.Entity.id == entry_id)
+async def get(db: AsyncSession, entry_id: int) -> model.Entry | None:
+    statement = select(model.Entry).where(model.Entry.id == entry_id)
     result = await db.execute(statement)
     return result.scalar()
 
@@ -22,25 +22,25 @@ async def search(
     authors: list[str],
     limit: int,
     offset: int,
-) -> tuple[list[tuple[model.Entity, float]], int]:
+) -> tuple[list[tuple[model.Entry, float]], int]:
     # 検索条件設定
     where = or_(
-        match(model.Entity.title, against=query).in_boolean_mode(),
-        match(model.Entity.text, against=query).in_boolean_mode(),
-        match(model.Entity.translation_text, against=query).in_boolean_mode(),
+        match(model.Entry.title, against=query).in_boolean_mode(),
+        match(model.Entry.text, against=query).in_boolean_mode(),
+        match(model.Entry.translation_text, against=query).in_boolean_mode(),
     )
     if from_date is not None:
-        where = and_(where, model.Entity.date >= from_date)
+        where = and_(where, model.Entry.date >= from_date)
     if to_date is not None:
-        where = and_(where, model.Entity.date <= to_date)
+        where = and_(where, model.Entry.date <= to_date)
     if len(authors) > 0:
         where = and_(
             where,
-            match(model.Entity.authors, against=" OR ".join(authors)).in_boolean_mode(),
+            match(model.Entry.authors, against=" OR ".join(authors)).in_boolean_mode(),
         )
 
     # 総件数取得
-    statement = select(func.count(model.Entity.id).label("total")).where(where)
+    statement = select(func.count(model.Entry.id).label("total")).where(where)
     result = await db.execute(statement)
     item = result.first()
     total: int = 0 if item is None else item[0]
@@ -50,12 +50,12 @@ async def search(
     # 対象位置のデータ取得
     score_label = label(
         "score",
-        match(model.Entity.title, against=query).in_boolean_mode()
-        + match(model.Entity.text, against=query).in_boolean_mode()
-        + match(model.Entity.translation_text, against=query).in_boolean_mode(),
+        match(model.Entry.title, against=query).in_boolean_mode()
+        + match(model.Entry.text, against=query).in_boolean_mode()
+        + match(model.Entry.translation_text, against=query).in_boolean_mode(),
     )
     statement = (
-        select(model.Entity, score_label)
+        select(model.Entry, score_label)
         .where(where)
         .limit(limit)
         .offset(offset)
