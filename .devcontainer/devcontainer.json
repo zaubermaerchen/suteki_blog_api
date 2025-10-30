@@ -48,7 +48,8 @@
                 "charliermarsh.ruff"
 			],
             "settings": {
-                "python.defaultInterpreterPath": "/home/vscode/.venv/bin/python"
+                "python.defaultInterpreterPath": "/home/vscode/.venv/bin/python",
+                "python.useEnvironmentsExtension": false
             }
 		}
 	},
