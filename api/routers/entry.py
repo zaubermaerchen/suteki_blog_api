@@ -39,7 +39,7 @@ async def search(
     )
     return {
         "results": [
-            schema.SearchResultEntry.from_orm_and_score(*entry) for entry in entries
+            schema.SearchResultEntry.from_model_and_score(*entry) for entry in entries
         ],
         "count": count,
     }

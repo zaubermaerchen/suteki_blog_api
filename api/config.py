@@ -9,8 +9,7 @@ class Settings(BaseSettings):
     database_url: str = ""
     cors_allow_origins: str = ""
 
-    class Config:
-        env_file = [".env", ".env.local"]
+    model_config = {"env_file": [".env", ".env.local"]}
 
 
 @lru_cache

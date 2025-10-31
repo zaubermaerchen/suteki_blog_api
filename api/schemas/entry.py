@@ -1,6 +1,6 @@
 from datetime import date as date_type
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class GetEntryResponse(BaseModel):
@@ -12,8 +12,7 @@ class GetEntryResponse(BaseModel):
     url: str = Field(title="URL", examples=["https://example.com"])
     authors: list[str] = Field(title="投稿者")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
     @field_validator("authors", mode="before")
     def split_authors(cls, v):
@@ -31,8 +30,7 @@ class SearchResultEntry(BaseModel):
     authors: list[str] = Field(title="投稿者")
     score: float = Field(0, title="検索スコア")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
     @field_validator("text", mode="before")
     def summary_text(cls, v):
@@ -47,8 +45,8 @@ class SearchResultEntry(BaseModel):
         return v
 
     @classmethod
-    def from_orm_and_score(cls, model, score: float):
-        schema = cls.from_orm(model)
+    def from_model_and_score(cls, model, score: float):
+        schema = cls.model_validate(model)
         schema.score = score
         return schema
 
