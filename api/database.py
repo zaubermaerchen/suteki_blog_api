@@ -1,5 +1,4 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import NullPool
 
 from api.config import get_settings
@@ -21,8 +20,6 @@ session = async_sessionmaker(
     autocommit=False,
     future=True,
 )
-
-Base = declarative_base()
 
 
 async def get_session():

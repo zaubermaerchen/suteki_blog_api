@@ -1,38 +1,7 @@
-from sqlalchemy import Column, Date, DateTime, Index, Integer, String, Text
+from sqlalchemy import Column, Date, Index, Integer, Text
 from sqlalchemy.dialects.mysql import LONGTEXT
 
-from api.database import Base
-
-
-class Author(Base):
-    __tablename__ = "author"
-    __table_args__ = {
-        "mysql_charset": "utf8mb4",
-        "mysql_collate": "utf8mb4_bin",
-        "mysql_engine": "Mroonga",
-        "comment": 'default_tokenizer "TokenDelimit"',
-    }
-
-    name = Column(String(255), primary_key=True)
-
-
-class Comment(Base):
-    __tablename__ = "comment"
-    __table_args__ = (
-        Index("name", "name", mysql_prefix="FULLTEXT", mariadb_prefix="FULLTEXT"),
-        Index("text", "text", mysql_prefix="FULLTEXT", mariadb_prefix="FULLTEXT"),
-        {
-            "mysql_charset": "utf8mb4",
-            "mysql_engine": "Mroonga",
-        },
-    )
-
-    id = Column(Integer, primary_key=True)
-    entry_id = Column(Integer)
-    name = Column(Text)
-    date = Column(DateTime)
-    url = Column(Text)
-    text = Column(LONGTEXT)
+from api.models.base import Base
 
 
 class Entry(Base):
