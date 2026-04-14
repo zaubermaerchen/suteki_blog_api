@@ -17,7 +17,7 @@ asyncmy = []
 [dependency-groups]
 dev = [
     "pyright>=1.1.406",
-    "pytest>=8.4.2",
+    "pytest>=9.0.3",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.1",
 ]
