@@ -7,7 +7,7 @@ dependencies = [
     "cryptography>=46.0.3",
     "fastapi[standard]>=0.120.1",
     "gunicorn>=23.0.0",
-    "pydantic-settings>=2.11.0",
+    "pydantic-settings>=2.14.2",
     "sqlalchemy[asyncmy]>=2.0.44",
 ]
 
