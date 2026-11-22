@@ -9,6 +9,7 @@ dependencies = [
     "gunicorn>=23.0.0",
     "pydantic-settings>=2.14.2",
     "sqlalchemy[asyncmy]>=2.0.44",
+    "uvicorn-worker>=0.4.0",
 ]
 
 [project.optional-dependencies]
