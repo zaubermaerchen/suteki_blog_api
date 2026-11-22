@@ -9,7 +9,6 @@ settings = get_settings()
 app = FastAPI(
     title="suteki_blog_api",
     description="WHOLE SWEET LIFE search API",
-    root_path=settings.root_path,
     debug=settings.debug,
 )
 app.add_middleware(
